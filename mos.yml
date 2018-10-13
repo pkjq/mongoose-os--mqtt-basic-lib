@@ -1,0 +1,30 @@
+author: pkjq
+description: MQTT basic extension
+type: lib
+version: 1.0
+manifest_version: 2017-09-29
+
+sources:
+  - src
+includes:
+  - include
+
+config_schema:
+ - ["app.mqtt",                             "o",                                  {title: "Application MQTT custom settings"}]
+# Full MQTT topic constracts as "app.mqtt.<topic_type>_topic_prefix/app.mqtt.device_class/device.id"
+ - ["app.mqtt.device_class",                  "s", "any_class",                     {title: "device class for MQTT topic"}]
+ - ["app.mqtt.telemetry_topic_prefix",        "s", "telemetry",                     {title: "MQTT topic for telemetry data"}]
+ - ["app.mqtt.state_topic_prefix",            "s", "state",                         {title: "MQTT topic for state notification data"}]
+ - ["app.mqtt.command_topic_prefix",          "s", "command",                       {title: "MQTT topic for receiving command data"}]
+ - ["app.mqtt.online_topic_prefix",           "s", "online",                        {title: "MQTT topic for notifications about online status (retain)"}]
+
+cdefs:
+
+tags:
+  - mqtt
+  - cpp
+  - net
+
+libs:
+  - origin: https://github.com/pkjq/mqtt
+    version: master
