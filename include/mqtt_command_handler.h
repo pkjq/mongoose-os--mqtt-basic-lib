@@ -15,22 +15,20 @@
  * limitations under the License.
  */
 
-#ifndef G30C93F6B_855B_4928_A4AB_E9B536F47B26
-#define G30C93F6B_855B_4928_A4AB_E9B536F47B26
+#ifndef G4C9CD20A_7B13_4E19_9F49_A393DA374738
+#define G4C9CD20A_7B13_4E19_9F49_A393DA374738
 
 
 namespace mqtt
 {
-struct IEvents
+struct ICommands
 {
-    virtual void OnMqttStateChanged(bool online) = 0;
+    virtual void OnCmdAnnounce() const = 0;
 };
 
 
-//! Singleton (second call is ignored!)
-//! @param online_topic - if defined then message about online state be generated on MQTT connect\disconnect
-void CreateConnectionMonitor(IEvents &events, const char *online_topic = nullptr);
+void CreateCommandHandler(const char *command_topic, ICommands &commands);
 }
 
 
-#endif//G30C93F6B_855B_4928_A4AB_E9B536F47B26
+#endif//G4C9CD20A_7B13_4E19_9F49_A393DA374738

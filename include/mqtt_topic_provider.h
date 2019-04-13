@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 pkjq
+ * Copyright (c) 2018-2019 pkjq
  * All rights reserved
  *
  * Licensed under the Apache License, Version 2.0 (the ""License"");
@@ -33,39 +33,50 @@ public:
     MqttTopicProvider(const MqttTopicProvider&) = delete;
 
 public:
-    inline const std::string& GetTopic4Command() const
+    inline const std::string& GetTopic4Command(const char *device_class) const
     {
-        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->command_topic_prefix);
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->command_topic_prefix, device_class);
         return buffer;
     }
 
-    inline const std::string& GetTopic4Telemetry() const
+    inline const std::string& GetTopic4Telemetry(const char *device_class) const
     {
-        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->telemetry_topic_prefix);
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->telemetry_topic_prefix, device_class);
         return buffer;
     }
 
-    inline const std::string& GetTopic4State() const
+    inline const std::string& GetTopic4State(const char *device_class) const
     {
-        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->state_topic_prefix);
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->state_topic_prefix, device_class);
+        return buffer;
+    }
+
+    inline const std::string& GetTopic4Announce(const char *device_class) const
+    {
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->announce_topic_prefix, device_class);
         return buffer;
     }
 
     inline const std::string& GetTopic4OnlineStatus() const
     {
-        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->online_topic_prefix);
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->online_topic_prefix, nullptr);
         return buffer;
     }
 
 private:
-    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix)
+    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class)
     {
         buffer.clear();
         buffer = topic_prefix;
-        buffer += '/';
-        buffer += mgos_sys_config_get_app_mqtt()->device_class;
+
         buffer += '/';
         buffer += mgos_sys_config_get_device_id();
+
+        if (device_class)
+        {
+            buffer += '/';
+            buffer += device_class;
+        }
     }
 
 private:
