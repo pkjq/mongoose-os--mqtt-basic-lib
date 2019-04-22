@@ -63,6 +63,17 @@ public:
         return buffer;
     }
 
+    const std::string& GetServerOnlineStatusTopic() const
+    {
+        buffer.clear();
+        buffer = mgos_sys_config_get_app_mqtt()->online_topic_prefix;
+
+        buffer += '/';
+        buffer += mgos_sys_config_get_app_mqtt()->server_uid_for_online_topic;
+
+        return buffer;
+    }    
+
 private:
     static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class)
     {

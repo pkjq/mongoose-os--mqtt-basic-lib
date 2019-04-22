@@ -17,6 +17,8 @@ config_schema:
  - ["app.mqtt.state_topic_prefix",            "s", "state",                         {title: "MQTT topic for state notification data"}]
  - ["app.mqtt.command_topic_prefix",          "s", "command",                       {title: "MQTT topic for receiving command data"}]
  - ["app.mqtt.online_topic_prefix",           "s", "online",                        {title: "MQTT topic for notifications about online status (retain)"}]
+# Full topic constracts as "app.mqtt.online_topic_prefix/app.mqtt.server_uid_for_online_topic"
+ - ["app.mqtt.server_uid_for_online_topic",   "s", "server",                        {title: "Server UID for online topic (must be retained)"}]
 
 cdefs:
 
