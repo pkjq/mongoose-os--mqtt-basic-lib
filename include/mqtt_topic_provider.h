@@ -38,6 +38,12 @@ public:
         ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->command_topic_prefix, device_class);
         return buffer;
     }
+    
+    inline const std::string& GetTopic4Command(const char *device_class, uint_fast8_t device_class_uid) const
+    {
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->command_topic_prefix, device_class, device_class_uid);
+        return buffer;
+    }
 
     inline const std::string& GetTopic4Telemetry(const char *device_class) const
     {
@@ -89,6 +95,15 @@ private:
             buffer += device_class;
         }
     }
+    
+    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class, uint_fast8_t device_class_uid)
+    {
+        ComposeMqttTopic(buffer, topic_prefix, device_class);
+        
+        // assert(!!device_class);
+        buffer += '/';
+        buffer += std::to_string(device_class_uid);
+    }    
 
 private:
     mutable std::string buffer;
