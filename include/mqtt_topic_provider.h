@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 pkjq
+ * Copyright (c) 2018-2020 pkjq
  * All rights reserved
  *
  * Licensed under the Apache License, Version 2.0 (the ""License"");
@@ -51,11 +51,24 @@ public:
         return buffer;
     }
 
+    inline const std::string& GetTopic4Telemetry(const char *device_class, uint_fast8_t device_class_uid) const
+    {
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->telemetry_topic_prefix, device_class, device_class_uid);
+        return buffer;
+    }
+
     inline const std::string& GetTopic4State(const char *device_class) const
     {
         ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->state_topic_prefix, device_class);
         return buffer;
     }
+
+    inline const std::string& GetTopic4State(const char *device_class, uint_fast8_t device_class_uid) const
+    {
+        ComposeMqttTopic(buffer, mgos_sys_config_get_app_mqtt()->state_topic_prefix, device_class, device_class_uid);
+        return buffer;
+    }
+
 
     inline const std::string& GetTopic4Announce(const char *device_class) const
     {
@@ -69,6 +82,7 @@ public:
         return buffer;
     }
 
+
     const std::string& GetServerOnlineStatusTopic() const
     {
         buffer.clear();
@@ -81,30 +95,8 @@ public:
     }    
 
 private:
-    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class)
-    {
-        buffer.clear();
-        buffer = topic_prefix;
-
-        buffer += '/';
-        buffer += mgos_sys_config_get_device_id();
-
-        if (device_class)
-        {
-            buffer += '/';
-            buffer += device_class;
-        }
-    }
-    
-    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class, uint_fast8_t device_class_uid)
-    {
-        ComposeMqttTopic(buffer, topic_prefix, device_class);
-        
-        // assert(!!device_class);
-        buffer += '/';
-        // assert(device_class_uid < 10);
-        buffer += static_cast<const char>(device_class_uid + '0');
-    }    
+    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class);
+    static void ComposeMqttTopic(std::string &buffer, const char *topic_prefix, const char *device_class, uint_fast8_t device_class_uid);
 
 private:
     mutable std::string buffer;
