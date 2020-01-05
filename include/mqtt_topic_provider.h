@@ -102,7 +102,8 @@ private:
         
         // assert(!!device_class);
         buffer += '/';
-        buffer += std::to_string(device_class_uid);
+        // assert(device_class_uid < 10);
+        buffer += static_cast<const char>(device_class_uid + '0');
     }    
 
 private:
